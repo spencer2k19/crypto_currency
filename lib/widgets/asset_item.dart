@@ -15,8 +15,8 @@ class AssetItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      width: 170,
+      margin: const EdgeInsets.only(right: 20),
       padding: const EdgeInsets.symmetric(vertical: 15),
       decoration: InsetBox.BoxDecoration(
         borderRadius: BorderRadius.circular(15),
@@ -52,18 +52,18 @@ class AssetItem extends StatelessWidget {
           Text(name,style: titleStyleWhite.copyWith(
             color: grayColor,
             fontWeight: FontWeight.w500,
-            fontSize: 11,
+            fontSize: 12,
           ),),
           const SizedBox(height: 15,),
           Text(price,style: titleStyleWhite.copyWith(
             fontWeight: FontWeight.w600,
-            fontSize: 11,
+            fontSize: 12,
           ),),
           const SizedBox(height: 15,),
           Container(
             width: 49,
             height: 20,
-            padding: const EdgeInsets.symmetric(horizontal: 5),
+
             decoration: BoxDecoration(
               color: mainColor,
               borderRadius: BorderRadius.circular(16),
@@ -80,7 +80,7 @@ class AssetItem extends StatelessWidget {
                 Text(variation,style: titleStyleWhite.copyWith(
                   color: grayColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 11
+                  fontSize: 12
                 ),)
               ],
             ),

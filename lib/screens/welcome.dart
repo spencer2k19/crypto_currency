@@ -1,6 +1,8 @@
-import 'package:crypto_currency/asset.dart';
+import 'package:crypto_currency/models/asset.dart';
+import 'package:crypto_currency/models/trend.dart';
 import 'package:crypto_currency/shared/title_style.dart';
 import 'package:crypto_currency/widgets/asset_item.dart';
+import 'package:crypto_currency/widgets/trend_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -16,62 +18,68 @@ class Welcome extends StatelessWidget {
       height: 220,
       child: Stack(
         children: [
-          Image.asset(
-            "assets/images/card.png",
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.asset(
+              "assets/images/card.png",
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
           ),
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Total balance",
-                          style: titleStyleWhite.copyWith(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: const Color(0xFFA7A7A7)),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "\$13450.00",
-                          style: titleStyleWhite.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 19,
-                          ),
-                        )
-                      ],
-                    ),
-                    Container(
-                      width: 70,
-                      height: 36,
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.36),
-                          borderRadius: BorderRadius.circular(36)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                padding: const EdgeInsets.only(top: 60),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SvgPicture.asset("assets/images/up.svg"),
                           Text(
-                            "+15%",
+                            "Total balance",
                             style: titleStyleWhite.copyWith(
-                                fontWeight: FontWeight.w400, fontSize: 12),
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: const Color(0xFFA7A7A7)),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "\$13450.00",
+                            style: titleStyleWhite.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 19,
+                            ),
                           )
                         ],
                       ),
-                    )
-                  ],
+                      Container(
+                        width: 70,
+                        height: 36,
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.36),
+                            borderRadius: BorderRadius.circular(36)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset("assets/images/up.svg"),
+                            Text(
+                              "+15%",
+                              style: titleStyleWhite.copyWith(
+                                  fontWeight: FontWeight.w400, fontSize: 12),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Container(
@@ -143,78 +151,128 @@ class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Asset> assets = [
-      Asset("Bitcoin", "\$6012.00","bitcoin.svg", "+2.17", "bitcoin_var.png"),
-      Asset("Ethereum", "\$4512.00","ethereum.svg", "-1.17", "ethereum_var.png"),
-      Asset("Ripple", "\$3429.00","ripple.svg", "-2.17", "ripple_var.png"),
+      Asset("Bitcoin", "\$6012.00", "bitcoin.svg", "+2.17", "bitcoin_var.png"),
+      Asset(
+          "Ethereum", "\$4512.00", "ethereum.svg", "-1.17", "ethereum_var.png"),
+      Asset("Ripple", "\$3429.00", "ripple.svg", "-2.17", "ripple_var.png"),
+    ];
+    final List<Trend> trends = [
+      Trend("litecoin.png", "Litecoin", "LTE", "3457.00", "litecoin_graph.png"),
+      Trend(
+          "dogecoin.png", "Dogecoin", "DOGE", "4457.00", "dogecoin_graph.png"),
     ];
 
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hello Vani,",
-                style: titleStyleWhite.copyWith(
-                    fontSize: 14, fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                "Welcome!!",
-                style: titleStyleWhite.copyWith(
-                    fontSize: 19, fontWeight: FontWeight.w600),
-              ),
-              buildBalanceWithProfit(),
-              const SizedBox(
-                height: 25,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Assets",
-                      style: titleStyleWhite.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 19,
-                          height: 1.5),
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 20),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Hello Vani,",
+                    style: titleStyleWhite.copyWith(
+                        fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    "Welcome!!",
+                    style: titleStyleWhite.copyWith(
+                        fontSize: 19, fontWeight: FontWeight.w600),
+                  ),
+                  buildBalanceWithProfit(),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Assets",
+                          style: titleStyleWhite.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 19,
+                              height: 1.5),
+                        ),
+                        Text(
+                          "view all",
+                          style: titleStyleWhite.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "view all",
-                      style: titleStyleWhite.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 200,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: assets.length,
-                    itemBuilder: (context, index) {
-                      final asset = assets[index];
-                      return AssetItem(
-                          asset.name,
-                          asset.price,
-                          asset.imageAssetName,
-                          asset.variation,
-                          asset.assetPrice);
-                    }),
-              )
-            ],
+            ),
           ),
-        ),
+          SliverToBoxAdapter(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: assets.length,
+                        itemBuilder: (context, index) {
+                          final asset = assets[index];
+                          return AssetItem(
+                              asset.name,
+                              asset.price,
+                              asset.imageAssetName,
+                              asset.variation,
+                              asset.assetPrice);
+                        }),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Trends",
+                          style: titleStyleWhite.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 19,
+                              height: 1.5),
+                        ),
+                        Text(
+                          "view all",
+                          style: titleStyleWhite.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverList(
+
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return TrendItem(trend: trends[index]);
+            },childCount: trends.length),
+          ),
+          const SliverPadding(padding: EdgeInsets.only(bottom: 60)),
+        ],
       ),
     );
   }

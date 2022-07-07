@@ -136,8 +136,11 @@ class Intro extends StatelessWidget {
                         },
 
                         iconColor: Colors.white,
-                        offsetDx: 3,
-                        rightSwipeWidget: null,
+                        offsetDx: 4,
+                        animationDuration: const Duration(
+                          seconds: 1
+                        ),
+
 
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(90),
